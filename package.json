@@ -1,0 +1,83 @@
+{
+  "name": "add-trusted-cert",
+  "version": "0.5.0",
+  "description": "Add trusted certificates to the macOS system keychain via an API",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src -d lib",
+    "debug": "nodemon --inspect --require @babel/register --require source-map-support/register src/index.js",
+    "debug:break": "nodemon --inspect-brk --require @babel/register --require source-map-support/register src/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage:watch": "jest --coverage --watch",
+    "toc": "toc-md README.md README.md",
+    "add-readme": "git add README.md",
+    "lint-staged": "lint-staged",
+    "prepublishOnly": "jest && babel src -d lib",
+    "prepare-publish": "npm run changelog:verify && version-bump && npm run changelog:release",
+    "version-bump": "version-bump",
+    "changelog:help": "changelog-version",
+    "changelog:verify": "changelog-version verify",
+    "changelog:prepare": "changelog-version prepare",
+    "changelog:release": "changelog-version release",
+    "lint": "prettier-standard src/**/*.js && standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theogravity/add-trusted-cert.git"
+  },
+  "author": "Theo Gravity <theo@suteki.nu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/theogravity/add-trusted-cert/issues"
+  },
+  "homepage": "https://github.com/theogravity/add-trusted-cert#readme",
+  "keywords": ["keychain", "credential", "credentials", "vault", "ssl", "trust store", "certificate", "certificates", "ca"],
+  "dependencies": {
+    "execa": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
+    "@theo.gravity/changelog-version": "^2.1.8",
+    "@theo.gravity/version-bump": "^1.1.1",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "jest": "^23.6.0",
+    "jest-junit-reporter": "^1.1.0",
+    "lint-staged": "^8.1.0",
+    "nodemon": "^1.18.9",
+    "pre-commit": "^1.2.2",
+    "prettier-standard": "^8.0.1",
+    "regenerator-runtime": "^0.13.1",
+    "source-map-support": "^0.5.10",
+    "standard": "^12.0.1",
+    "toc-md": "^0.2.0"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "prettier-standard",
+      "git add"
+    ]
+  },
+  "pre-commit": [
+    "lint-staged",
+    "test",
+    "build"
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "testResultsProcessor": "./node_modules/jest-junit-reporter",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/lib"
+    ]
+  }
+}
