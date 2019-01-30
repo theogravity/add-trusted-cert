@@ -6,6 +6,10 @@ This is useful if you are generating a root CA / self-signed certificate and wan
 
 For more information, see `man security` and search for the `add-trusted-cert` command.
 
+## Install
+
+`npm i add-trusted-cert`
+
 ## Notes
 
 - Using this will prompt the user for sudo access for `security` to write to the keychain,
