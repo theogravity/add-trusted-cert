@@ -1,6 +1,6 @@
 {
   "name": "add-trusted-cert",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Add trusted certificates to the macOS system keychain via an API",
   "main": "lib/index.js",
   "scripts": {
@@ -32,9 +32,20 @@
     "url": "https://github.com/theogravity/add-trusted-cert/issues"
   },
   "homepage": "https://github.com/theogravity/add-trusted-cert#readme",
-  "keywords": ["keychain", "credential", "credentials", "vault", "ssl", "trust store", "certificate", "certificates", "ca"],
+  "keywords": [
+    "keychain",
+    "credential",
+    "credentials",
+    "vault",
+    "ssl",
+    "trust store",
+    "certificate",
+    "certificates",
+    "ca"
+  ],
   "dependencies": {
-    "execa": "^1.0.0"
+    "debug": "^4.1.1",
+    "sudo-prompt": "^8.2.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

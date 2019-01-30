@@ -2,17 +2,38 @@
 
 An API for calling the `security add-trusted-cert` command in macOS to add certificates to the system keychain.
 
+This is useful if you are generating a root CA / self-signed certificate and want to auto-register it into the keychain.
+
 For more information, see `man security` and search for the `add-trusted-cert` command.
+
+## Notes
+
+- Using this will prompt the user for sudo access for `security` to write to the keychain,
+followed by another confirmation to add the certificate to the trust store.
+- I have never gotten the `policyConstraint` flags to work with `trustAsRoot` for `resultType`
+- I cannot offer support for troubleshooting the `security` parameters, it's very much a black box in general
 
 ## Usage
 
 ```js
-import { addTrustedCert } from 'add-trusted-cert'
+import { addTrustedCert, POLICY_CONSTRAINTS, RESULT_TYPES } from 'add-trusted-cert'
 
 (async () => {
-  await addTrustedCert(options, certFileToAdd)
+  // Add a root certificate / certificate authority
+  // This will set the policy for the cert to 'Always Trust'
+  // Be aware of the security implications of allowing the cert to be trusted for everything
+  await addTrustedCert({
+    addToAdminCertStore: true,
+    resultType: RESULT_TYPES.TRUST_ROOT,
+  }, 'root.crt')
 })()
 ```
+
+## Debugging
+
+To see the command line output that is generated, add:
+
+`DEBUG=add-trusted-cert <your node app start command>`
 
 ### API
 
@@ -35,7 +56,7 @@ Trust Settings, the process must be running as root, or admin authentication is 
 | [options.policyString] | <code>string</code> | Policy-specific string |
 | [options.allowedError] | <code>Array.&lt;(string\|number)&gt;</code> \| <code>number</code> \| <code>string</code> |  |
 | [options.keyUsageCode] | <code>number</code> | Key usage. For more than one usage, add values together (except -1). |
-| [options.keychain] | <code>string</code> | Keychain to which the cert is added |
+| [options.keychain] | <code>string</code> | Keychain to which the cert is added. Default is '/Library/Keychains/System.keychain'. |
 | [options.settingsFileIn] | <code>string</code> | Input trust settings file; default is user domain |
 | [options.settingsFileOut] | <code>string</code> | Output trust settings file; default is user domain |
 | certFile | <code>string</code> | Certificate file to add |

@@ -1,4 +1,6 @@
-import execa from 'execa'
+import { exec } from 'sudo-prompt'
+
+const debug = require('debug')('add-trusted-cert')
 
 /**
  * Add certificate (in DER or PEM format) from certFile to per-user or local Admin Trust Settings. When modifying
@@ -15,18 +17,42 @@ import execa from 'execa'
  * @param {string} [options.policyString] Policy-specific string
  * @param {Array<string|number>|number|string} [options.allowedError]
  * @param {number} [options.keyUsageCode] Key usage. For more than one usage, add values together (except -1).
- * @param {string} [options.keychain] Keychain to which the cert is added
+ * @param {string} [options.keychain] Keychain to which the cert is added. Default is '/Library/Keychains/System.keychain'.
  * @param {string} [options.settingsFileIn] Input trust settings file; default is user domain
  * @param {string} [options.settingsFileOut] Output trust settings file; default is user domain
  * @param {string} certFile Certificate file to add
  * @returns {Promise<string>} Output of the `security add-trusted-cert` command
  */
-export async function addTrustedCert (options, certFile) {
-  const params = buildAddTrustedCertCmd(options, certFile)
+export async function addTrustedCert (options = {}, certFile) {
+  return new Promise((resolve, reject) => {
+    const params = buildAddTrustedCertCmd(options, certFile)
 
-  const { stdout } = await execa('security', params)
+    params.unshift('security')
 
-  return stdout
+    debug(`Executing 'security add-trusted-cert' command:`)
+
+    const cmd = params.join(' ')
+
+    debug(cmd)
+
+    exec(
+      cmd,
+      {
+        name: 'Keychain access for adding new certificate'
+      },
+      (err, stdout, stderr) => {
+        if (err) {
+          return reject(err)
+        }
+
+        if (stderr) {
+          return reject(stderr)
+        }
+
+        resolve(stdout)
+      }
+    )
+  })
 }
 
 /**
@@ -42,7 +68,7 @@ export async function addTrustedCert (options, certFile) {
  * @param {string} [options.policyString] Policy-specific string
  * @param {Array<string|number>|number|string} [options.allowedError]
  * @param {number} [options.keyUsageCode] Key usage. For more than one usage, add values together (except -1).
- * @param {string} [options.keychain] Keychain to which the cert is added
+ * @param {string} [options.keychain] Keychain to which the cert is added. Default is '/Library/Keychains/System.keychain'.
  * @param {string} [options.settingsFileIn] Input trust settings file; default is user domain
  * @param {string} [options.settingsFileOut] Output trust settings file; default is user domain
  * @param {string} certFile Certificate file to add
@@ -125,6 +151,11 @@ export function buildAddTrustedCertCmd (
     cmds.push(keychain)
   }
 
+  if (!keychain) {
+    cmds.push('-k')
+    cmds.push('/Library/Keychains/System.keychain')
+  }
+
   if (settingsFileIn) {
     cmds.push('-i')
     cmds.push(settingsFileIn)
@@ -172,7 +203,9 @@ export const ALLOWED_ERRORS = {
  * @type {{TRUST_ROOT: string, TRUST_AS_ROOT: string, DENY: string, UNSPECIFIED: string}}
  */
 export const RESULT_TYPES = {
+  // use for root certificates
   TRUST_ROOT: 'trustRoot',
+  // trustAsRoot trusts everything signed by that certificate even if it is not a root certificate
   TRUST_AS_ROOT: 'trustAsRoot',
   DENY: 'deny',
   UNSPECIFIED: 'unspecified'
