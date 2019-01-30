@@ -1,7 +1,7 @@
 {
   "name": "add-trusted-cert",
   "version": "0.6.0",
-  "description": "Add trusted certificates to the macOS system keychain via an API",
+  "description": "Add trusted certificates to the macOS keychain via an API",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src -d lib",
