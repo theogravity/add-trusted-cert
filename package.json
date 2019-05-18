@@ -1,6 +1,6 @@
 {
   "name": "add-trusted-cert",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Add trusted certificates to the macOS keychain via an API",
   "main": "lib/index.js",
   "scripts": {
@@ -48,26 +48,26 @@
     "sudo-prompt": "^8.2.5"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-class-properties": "^7.2.3",
-    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
-    "@babel/preset-env": "^7.2.3",
-    "@babel/register": "^7.0.0",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/register": "^7.4.4",
     "@theo.gravity/changelog-version": "^2.1.8",
     "@theo.gravity/version-bump": "^1.1.1",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
-    "jest": "^23.6.0",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
     "jest-junit-reporter": "^1.1.0",
-    "lint-staged": "^8.1.0",
-    "nodemon": "^1.18.9",
+    "lint-staged": "^8.1.7",
+    "nodemon": "^1.19.0",
     "pre-commit": "^1.2.2",
-    "prettier-standard": "^8.0.1",
-    "regenerator-runtime": "^0.13.1",
-    "source-map-support": "^0.5.10",
+    "prettier-standard": "^9.1.1",
+    "regenerator-runtime": "^0.13.2",
+    "source-map-support": "^0.5.12",
     "standard": "^12.0.1",
-    "toc-md": "^0.2.0"
+    "toc-md-alt": "^0.3.0"
   },
   "lint-staged": {
     "src/**/*.js": [
