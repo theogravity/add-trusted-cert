@@ -44,7 +44,7 @@
     "ca"
   ],
   "dependencies": {
-    "debug": "^4.1.1",
+    "debug": "^4.3.1",
     "sudo-prompt": "^8.2.5"
   },
   "devDependencies": {
